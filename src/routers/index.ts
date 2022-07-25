@@ -1,4 +1,3 @@
-import prisma from "../config/db";
 import { Router } from "express";
 
 import authRouter from "./authRouter";
