@@ -14,5 +14,31 @@ export async function findCategoryById(categoryId: number) {
 }
 
 export async function insertTest(test: testData) {
-    return prisma.test.create({ data: test })
+  return prisma.test.create({ data: test });
+}
+
+export async function findTestByDiscipline() {
+  return prisma.term.findMany({
+    select: {
+      number: true,
+      Discipline: {
+        select: {
+          id: true,
+          name: true,
+          TeacherDiscipline: {
+            select: {
+              teachers: { select: { name: true } },
+              Test: {
+                select: {
+                  name: true,
+                  pdfUrl: true,
+                  categories: { select: { name: true } },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
 }

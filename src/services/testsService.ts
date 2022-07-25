@@ -13,3 +13,8 @@ export async function addNewTest(test: testData) {
 
     await testRepository.insertTest(test);
 }
+
+export async function getTestsByDiscipline() {
+    const tests = await testRepository.findTestByDiscipline();
+    return tests;
+}

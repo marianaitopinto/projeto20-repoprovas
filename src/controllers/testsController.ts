@@ -10,3 +10,8 @@ export async function addNewTest(req: Request, res: Response) {
 
     res.sendStatus(201);
 }
+
+export async function getTestsByDiscipline(req: Request, res: Response) {
+    const tests = await testService.getTestsByDiscipline();
+    res.send(tests);
+}
