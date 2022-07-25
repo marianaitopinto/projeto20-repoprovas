@@ -42,3 +42,29 @@ export async function findTestByDiscipline() {
     },
   });
 }
+
+export async function getTestsByTeacher() {
+  return prisma.teacher.findMany({
+    select: {
+      id: true,
+      name: true,
+      TeacherDiscipline: {
+        select: {
+          disciplines: {
+            select: {
+              name: true,
+              terms: { select: { number: true } },
+            },
+          },
+          Test: {
+            select: {
+              name: true,
+              pdfUrl: true,
+              categories: { select: { name: true } },
+            },
+          },
+        },
+      },
+    },
+  });
+}

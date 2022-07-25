@@ -18,3 +18,8 @@ export async function getTestsByDiscipline() {
     const tests = await testRepository.findTestByDiscipline();
     return tests;
 }
+
+export async function getTestsByTeacher() {
+    const tests = await testRepository.getTestsByTeacher();
+    return tests;
+}
