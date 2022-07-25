@@ -2,37 +2,37 @@ import prisma from "../config/db";
 import { testData } from "../services/testsService";
 
 export async function findTeacherById(teacherDisciplineId: number) {
-  return prisma.teacherDiscipline.findFirst({
+  return prisma.teachersDisciplines.findFirst({
     where: { id: teacherDisciplineId },
   });
 }
 
 export async function findCategoryById(categoryId: number) {
-  return prisma.categorie.findFirst({
+  return prisma.categories.findFirst({
     where: { id: categoryId },
   });
 }
 
 export async function insertTest(test: testData) {
-  return prisma.test.create({ data: test });
+  return prisma.tests.create({ data: test });
 }
 
 export async function findTestByDiscipline() {
-  return prisma.term.findMany({
+  return prisma.terms.findMany({
     select: {
       number: true,
-      Discipline: {
+      disciplines: {
         select: {
           id: true,
           name: true,
-          TeacherDiscipline: {
+          teachersDisciplines: {
             select: {
-              teachers: { select: { name: true } },
-              Test: {
+              teacher: { select: { name: true } },
+              tests: {
                 select: {
                   name: true,
                   pdfUrl: true,
-                  categories: { select: { name: true } },
+                  category: { select: { name: true } },
                 },
               },
             },
@@ -44,27 +44,20 @@ export async function findTestByDiscipline() {
 }
 
 export async function getTestsByTeacher() {
-  return prisma.teacher.findMany({
+  return prisma.teachersDisciplines.findMany({
     select: {
       id: true,
-      name: true,
-      TeacherDiscipline: {
+      teacher: true,
+      discipline: true,
+      tests: {
         select: {
-          disciplines: {
-            select: {
-              name: true,
-              terms: { select: { number: true } },
-            },
-          },
-          Test: {
-            select: {
-              name: true,
-              pdfUrl: true,
-              categories: { select: { name: true } },
-            },
-          },
-        },
-      },
+          id: true,
+          name: true,
+          pdfUrl: true,
+          category: true,
+        }
+      }
+      
     },
   });
 }

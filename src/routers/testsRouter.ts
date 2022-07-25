@@ -6,8 +6,8 @@ import { signUpSchema, signInSchema } from "../schemas/authSchema";
 
 const testRouter = Router();
 
-testRouter.post("/tests", addNewTest);
-testRouter.get("/tests/disciplines", getTestsByDiscipline);
-testRouter.get("/tests/teachers", getTestsByTeacher);
+testRouter.post("/", addNewTest);
+testRouter.get("/disciplines", getTestsByDiscipline);
+testRouter.get("/teachers", getTestsByTeacher);
 
 export default testRouter;

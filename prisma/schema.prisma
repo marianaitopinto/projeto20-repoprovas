@@ -10,75 +10,61 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model users {
   id       Int    @id @default(autoincrement())
   email    String @unique
   password String
-
-  @@map("users")
 }
 
-model Teacher {
+model teachers {
   id   Int    @id @default(autoincrement())
   name String @unique
 
-  TeacherDiscipline TeacherDiscipline[]
-
-  @@map("teachers")
+  teachersDisciplines teachersDisciplines[]
 }
 
-model Categorie {
+model categories {
   id   Int    @id @default(autoincrement())
   name String @unique
 
-  Test Test[]
-
-  @@map("categories")
+  tests tests[]
 }
 
-model Term {
+model terms {
   id     Int @id @default(autoincrement())
   number Int @unique
 
-  Discipline Discipline[]
-
-  @@map("terms")
+  disciplines disciplines[]
 }
 
-model Discipline {
+model disciplines {
   id     Int    @id @default(autoincrement())
   name   String @unique
   termId Int
 
-  terms Term @relation(fields: [termId], references: [id])
+  terms terms @relation(fields: [termId], references: [id])
 
-  TeacherDiscipline TeacherDiscipline[]
-
-  @@map("disciplines")
+  teachersDisciplines teachersDisciplines[]
 }
 
-model TeacherDiscipline {
+model teachersDisciplines {
   id           Int @id @default(autoincrement())
   teacherId    Int
   disciplineId Int
 
-  teachers    Teacher    @relation(fields: [teacherId], references: [id])
-  disciplines Discipline @relation(fields: [disciplineId], references: [id])
+  teacher    teachers    @relation(fields: [teacherId], references: [id])
+  discipline disciplines @relation(fields: [disciplineId], references: [id])
 
-  Test        Test[]
-
-  @@map("teacherDisciplines")
+  tests tests[]
 }
 
-model Test {
+model tests {
   id                  Int    @id @default(autoincrement())
   name                String
   pdfUrl              String
   categoryId          Int
   teacherDisciplineId Int
 
-  categories         Categorie         @relation(fields: [categoryId], references: [id])
-  teacherDisciplines TeacherDiscipline @relation(fields: [teacherDisciplineId], references: [id])
-
-  @@map("tests")
+  category          categories          @relation(fields: [categoryId], references: [id])
+  teachersDisciplines teachersDisciplines @relation(fields: [teacherDisciplineId], references: [id])
 }

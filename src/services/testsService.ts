@@ -1,8 +1,8 @@
-import { Test } from "@prisma/client";
+import { tests } from "@prisma/client";
 import { AppError } from "../errors/appError";
 import * as testRepository from "../repositories/testsRepository";
 
-export type testData = Omit<Test, "id">;
+export type testData = Omit<tests, "id">;
 
 export async function addNewTest(test: testData) {
     const teacher = await testRepository.findTeacherById(test.teacherDisciplineId);

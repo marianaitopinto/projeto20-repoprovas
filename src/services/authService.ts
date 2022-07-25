@@ -2,11 +2,11 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import "dotenv/config";
 
-import { User } from "@prisma/client";
+import { users } from "@prisma/client";
 import { AppError } from "../errors/appError";
 import * as authRepository from "../repositories/authRepository";
 
-export type userData = Omit<User, "id">;
+export type userData = Omit<users, "id">;
 
 const SALT_ROUNDS = 10;
 
@@ -29,7 +29,7 @@ export async function signIn({ email, password }: userData) {
     return token;
   }
   
-  async function generateToken(user: User) {
+  async function generateToken(user: users) {
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string);
     return token;
   }

@@ -13,10 +13,10 @@ export async function addNewTest(req: Request, res: Response) {
 
 export async function getTestsByDiscipline(req: Request, res: Response) {
     const tests = await testService.getTestsByDiscipline();
-    res.send(tests);
+    res.send({tests: tests});
 }
 
 export async function getTestsByTeacher(req: Request, res: Response) {
     const tests = await testService.getTestsByTeacher();
-    res.send(tests);
+    res.send({tests: tests});
 }
