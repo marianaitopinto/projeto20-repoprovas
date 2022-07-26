@@ -2,13 +2,13 @@ import prisma from "../config/db";
 import { testData } from "../services/testsService";
 
 export async function findTeacherById(teacherDisciplineId: number) {
-  return prisma.teachersDisciplines.findFirst({
+  return prisma.teachersDisciplines.findMany({
     where: { id: teacherDisciplineId },
   });
 }
 
 export async function findCategoryById(categoryId: number) {
-  return prisma.categories.findFirst({
+  return prisma.categories.findMany({
     where: { id: categoryId },
   });
 }

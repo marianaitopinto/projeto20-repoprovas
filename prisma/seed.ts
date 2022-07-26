@@ -1,4 +1,5 @@
 import prisma from "../src/config/db";
+import bcrypt from "bcrypt";
 
 async function main() {
   const teachers = [{ name: "Diego Pinho" }, { name: "Bruna Harmoni" }];
@@ -54,6 +55,7 @@ async function main() {
   await prisma.disciplines.createMany({ data: disciplines });
   await prisma.categories.createMany({ data: categories });
   await prisma.teachersDisciplines.createMany({ data: teachersDisciplines });
+  await prisma.users.create({data: {email: "testando@testando.com", password: bcrypt.hashSync("123456", 10)}})
 }
 
 main()
