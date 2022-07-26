@@ -44,9 +44,9 @@ describe("tests with sign-up", () => {
 
 describe("tests with sign-in", () => {
   it("login, should return status 200", async () => {
-    console.log({globalUser})
-    const users = await prisma.users.findMany()
-    console.log(users)
+    console.log({ globalUser });
+    const users = await prisma.users.findMany();
+    console.log(users);
     const result = await supertest(app).post("/sign-in").send(globalUser);
     expect(result.status).toEqual(200);
   });
@@ -86,14 +86,11 @@ describe("posting tests", () => {
   });
 
   it("should return 201 to creaete a new test", async () => {
-    const body = await newUser();
-    await supertest(app).post("/sign-up").send(body);
-    delete body.confirmPassword;
-    const result = await supertest(app).post("/sign-in").send(body);
+    const result = await supertest(app).post("/sign-in").send(globalUser);
     const token = result.text;
 
     const test = await createTestInfo();
-    console.log(test)
+    console.log(test);
     const testResult = await supertest(app)
       .post("/tests")
       .set("Authorization", `Bearer ${token}`)
@@ -103,21 +100,70 @@ describe("posting tests", () => {
   });
 
   it("trying to create test missing inputs, should return status 422", async () => {
-
-    const user = await newUser();
-    await supertest(app).post("/sign-up").send(user);
-    delete user.confirmPassword;
-    const result = await supertest(app).post("/sign-in").send(user);
+    const result = await supertest(app).post("/sign-in").send(globalUser);
     const token = result.text;
 
     const test = await createTestInfo();
     delete test.name;
-    console.log(test)
     const testResult = await supertest(app)
       .post("/tests")
       .set("Authorization", `Bearer ${token}`)
       .send(test);
 
     expect(testResult.status).toEqual(422);
+  });
+});
+
+describe("get tests by disciplines", () => {
+  it("should return 401 tryng to get tests with no token", async () => {
+    const test = await createTestInfo();
+    const testResult = await supertest(app)
+      .get("/tests/disciplines")
+      .send(test);
+
+    expect(testResult.status).toEqual(401);
+  });
+
+  it("should return tests with valid inputs", async () => {
+    const result = await supertest(app).post("/sign-in").send(globalUser);
+    const token = result.text;
+
+    const test = await createTestInfo();
+    await supertest(app)
+      .post("/tests")
+      .set("Authorization", `Bearer ${token}`)
+      .send(test);
+
+    const testResult = await supertest(app)
+      .get("/tests/disciplines")
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(testResult.body).not.toBeNull();
+  });
+});
+
+describe("get tests by teachers", () => {
+  it("should return 401 tryng to get tests with no token", async () => {
+    const test = await createTestInfo();
+    const testResult = await supertest(app).get("/tests/teachers").send(test);
+
+    expect(testResult.status).toEqual(401);
+  });
+
+  it("should return tests with valid inputs", async () => {
+    const result = await supertest(app).post("/sign-in").send(globalUser);
+    const token = result.text;
+
+    const test = await createTestInfo();
+    await supertest(app)
+      .post("/tests")
+      .set("Authorization", `Bearer ${token}`)
+      .send(test);
+
+    const testResult = await supertest(app)
+      .get("/tests/teachers")
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(testResult.body).not.toBeNull();
   });
 });
