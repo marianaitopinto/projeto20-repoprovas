@@ -40,11 +40,29 @@ describe("tests with sign-up", () => {
 });
 
 describe("tests with sign-in", () => {
-  it("create a new user, should return status 201", async () => {
+  it("login, should return status 200", async () => {
     const body = await newUser();
-
+    await supertest(app).post("/sign-up").send(body);
+    delete body.confirmPassword;
     const result = await supertest(app).post("/sign-in").send(body);
 
     expect(result.status).toEqual(200);
+  });
+
+  it("login, should return token", async () => {
+    const body = await newUser();
+    await supertest(app).post("/sign-up").send(body);
+    delete body.confirmPassword;
+    const result = await supertest(app).post("/sign-in").send(body);
+    const token = result.text;
+    expect(token).not.toBeNull();
+  });
+
+  it("trying to login with email not registered, should return status 401", async () => {
+    const body = await newUser();
+    delete body.confirmPassword;
+    const result = await supertest(app).post("/sign-in").send(body);
+
+    expect(result.status).toEqual(401);
   });
 });
