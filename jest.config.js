@@ -1,3 +1,4 @@
+/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
   setupFilesAfterEnv: ["./jest.setup.js"],
   preset: "ts-jest",
@@ -9,6 +10,6 @@ module.exports = {
     },
   },
   moduleNameMapper: {
-    "^(\.{1,2}/.)\.js$": "$1",
+    "^(\\.{1,2}/.*)\\.js$": "$1",
   },
 };

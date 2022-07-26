@@ -6,7 +6,7 @@ import { signUpSchema, signInSchema } from "../schemas/authSchema";
 
 const authRouter = Router();
 
-authRouter.post("/sign-up",  signUp); //FIX ME VER ERRO SCHEMA
-authRouter.post("/sign-in", validateSchemaMiddleware(signInSchema), signIn); //FIX ME VER ERRO SCHEMA
+authRouter.post("/sign-up", validateSchemaMiddleware(signUpSchema), signUp); 
+authRouter.post("/sign-in", validateSchemaMiddleware(signInSchema), signIn); 
 
 export default authRouter;
